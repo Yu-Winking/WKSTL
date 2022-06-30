@@ -10,7 +10,8 @@ namespace wkSTL
 {
 	using namespace std;
 
-	template <class T> class Queue
+	template <class T> 
+	class Queue
 	{
 	public:
 		Queue(Queue const&) = delete;
@@ -95,7 +96,7 @@ namespace wkSTL
 			return deque_.size();
 		}
 
-		template <typename T> 
+		template <typename T>
 		size_t push(const T& _in)
 		{
 			uint8_t* add = (uint8_t*)(&_in);
@@ -117,7 +118,7 @@ namespace wkSTL
 			return static_cast<size_t>(_len);
 		}
 
-		template <typename T> 
+		template <typename T>
 		size_t push(const vector<T>& _vector)
 		{
 			size_t pushCount{ 0 };
@@ -132,7 +133,7 @@ namespace wkSTL
 
 				pushCount += sizeof(T);
 			}
-				
+
 			return pushCount;
 		}
 
@@ -148,7 +149,8 @@ namespace wkSTL
 			return strLen;
 		}
 
-		template <typename T>  const deque<uint8_t>::iterator search(const T& _in)
+		template <typename T>  
+		const deque<uint8_t>::iterator search(const T& _in)
 		{
 			uint8_t* add = (uint8_t*)(&_in);
 
@@ -156,11 +158,7 @@ namespace wkSTL
 			temp.resize(sizeof(T));
 			copy_backward(add, add+sizeof(T), temp.end());
 
-			deque<uint8_t>::iterator  it(deque_.end());
-
-			it = std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
-
-			return it;
+			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
 
 		const deque<uint8_t>::iterator search(const char* _buf, const int _len)
@@ -169,13 +167,24 @@ namespace wkSTL
 			temp.resize(_len);
 			copy_backward(_buf, _buf+_len, temp.end());
 
-			deque<uint8_t>::iterator  it(deque_.end());
-
-			it = std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
-
-			return it;
+			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
 
+		template <typename T>
+		const deque<uint8_t>::iterator search(const vector<T>& _vector)
+		{
+			deque<uint8_t> temp;
+
+			for (auto it: _vector)
+			{
+				uint8_t* add = (uint8_t*)(&it);
+
+				temp.resize(temp.size() + sizeof(T));
+				copy_backward(add, add+sizeof(T), temp.end());
+			}
+
+			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
+		}
 
 		const deque<uint8_t>::iterator search(const string& _str)
 		{
@@ -183,9 +192,7 @@ namespace wkSTL
 			temp.resize(_str.length());
 			copy_backward(_str.begin(), _str.end(), temp.end());
 
-			deque<uint8_t>::iterator  it = std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
-
-			return it;
+			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
 
 		long long at(deque<uint8_t>::iterator _it)
@@ -246,7 +253,7 @@ namespace wkSTL
 			}
 
 			_os.flags(f);
-			_os << endl;
+			//_os << endl;
 
 			return _os;
 		}
