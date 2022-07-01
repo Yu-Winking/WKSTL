@@ -50,9 +50,14 @@ int main()
 	pushLen = pipeline.push(std::move(a));
 	std::cout << "push class A length:" << pushLen << std::endl;
 
-	std::vector<int> vec{ 1,2,3,4,5,6,7,8,9,10 };
-	pushLen = pipeline.push(vec);
-	std::cout << "push vector length:" << pushLen << std::endl;
+	std::vector<int> vecInt{ 1,2,3,4,5,6,7,8,9,10 };
+	pushLen = pipeline.push(vecInt);
+	std::cout << "push int vector length:" << pushLen << std::endl;
+	pipeline.push('\0');
+
+	std::vector<std::string> vecStr{ "abc", "efg", "hijk", "lmnopqrst" };
+	pushLen = pipeline.push(vecStr);
+	std::cout << "push string vector length:" << pushLen << std::endl;
 	//pipeline.push('\0');
 
 	int in{ 0x12345678 };
@@ -100,8 +105,10 @@ int main()
 	std::cout << "in pos:" << pipeline.at(pipeline.search(in)) << std::endl;
 	std::cout << "c1 pos:" << pipeline.at(pipeline.search(c1)) << std::endl;
  	std::cout << "c2 pos:" << pipeline.at(pipeline.search(c2, static_cast<int>(strlen(c2)+1))) << std::endl;
-	std::cout << "vec pos:" << pipeline.at(pipeline.search(vec)) << std::endl;
-	std::cout << "class a pos:" << pipeline.at(pipeline.search(a)) << std::endl;
+	std::cout << "int vector pos:" << pipeline.at(pipeline.search(vecInt)) << std::endl;
+	std::cout << "string vector pos:" << pipeline.at(pipeline.search(vecStr)) << std::endl;
+	std::cout << "string pos:" << pipeline.at(pipeline.search(str)) << std::endl;
+ 	std::cout << "class a pos:" << pipeline.at(pipeline.search(a)) << std::endl;
 
 	//char pop[10] = {};
 

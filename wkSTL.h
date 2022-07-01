@@ -10,7 +10,7 @@ namespace wkSTL
 {
 	using namespace std;
 
-	template <class T> 
+	template <class T>
 	class Queue
 	{
 	public:
@@ -149,7 +149,16 @@ namespace wkSTL
 			return strLen;
 		}
 
-		template <typename T>  
+		size_t push(const vector<string>& _vector)
+		{
+			size_t pushCount{ 0 };
+			for (auto it: _vector)
+				pushCount += push(it);
+
+			return pushCount;
+		}
+
+		template <typename T>
 		const deque<uint8_t>::iterator search(const T& _in)
 		{
 			uint8_t* add = (uint8_t*)(&_in);
@@ -166,6 +175,19 @@ namespace wkSTL
 			deque<uint8_t> temp;
 			temp.resize(_len);
 			copy_backward(_buf, _buf+_len, temp.end());
+
+			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
+		}
+
+		const deque<uint8_t>::iterator search(const vector<string>& _vector)
+		{
+			deque<uint8_t> temp{};
+
+			for (auto it : _vector)
+			{
+				temp.resize(temp.size() + it.length());
+				copy_backward(it.begin(), it.end(), temp.end());
+			}
 
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
