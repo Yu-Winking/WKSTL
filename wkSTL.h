@@ -5,6 +5,7 @@
 #include <deque>
 #include <string>
 #include <iomanip>
+#include <numeric>
 
 namespace wkSTL
 {
@@ -88,7 +89,7 @@ namespace wkSTL
 			deque_.clear();
 		}
 
-		size_t push(uint8_t _in)
+		size_t Push(uint8_t _in)
 		{
 			lock_guard<mutex> lock(mutex_);
 			deque_.push_back(_in);
@@ -97,7 +98,7 @@ namespace wkSTL
 		}
 
 		template <typename T>
-		size_t push(const T& _in)
+		size_t Push(const T& _in)
 		{
 			uint8_t* add = (uint8_t*)(&_in);
 
@@ -108,7 +109,7 @@ namespace wkSTL
 			return sizeof(T);
 		}
 
-		size_t push(const char* _buf, int _len)
+		size_t Push(const char* _buf, int _len)
 		{
 			lock_guard<mutex> lock(mutex_);
 
@@ -119,7 +120,7 @@ namespace wkSTL
 		}
 
 		template <typename T>
-		size_t push(const vector<T>& _vector)
+		size_t Push(const vector<T>& _vector)
 		{
 			size_t pushCount{ 0 };
 
@@ -137,7 +138,7 @@ namespace wkSTL
 			return pushCount;
 		}
 
-		size_t push(const string& _str)
+		size_t Push(const string& _str)
 		{
 			lock_guard<mutex> lock(mutex_);
 
@@ -149,17 +150,17 @@ namespace wkSTL
 			return strLen;
 		}
 
-		size_t push(const vector<string>& _vector)
+		size_t Push(const vector<string>& _vector)
 		{
 			size_t pushCount{ 0 };
 			for (auto it: _vector)
-				pushCount += push(it);
+				pushCount += Push(it);
 
 			return pushCount;
 		}
 
 		template <typename T>
-		const deque<uint8_t>::iterator search(const T& _in)
+		const deque<uint8_t>::iterator Search(const T& _in)
 		{
 			uint8_t* add = (uint8_t*)(&_in);
 
@@ -170,7 +171,7 @@ namespace wkSTL
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
 
-		const deque<uint8_t>::iterator search(const char* _buf, const int _len)
+		const deque<uint8_t>::iterator Search(const char* _buf, const int _len)
 		{
 			deque<uint8_t> temp;
 			temp.resize(_len);
@@ -179,7 +180,7 @@ namespace wkSTL
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
 
-		const deque<uint8_t>::iterator search(const vector<string>& _vector)
+		const deque<uint8_t>::iterator Search(const vector<string>& _vector)
 		{
 			deque<uint8_t> temp{};
 
@@ -193,7 +194,7 @@ namespace wkSTL
 		}
 
 		template <typename T>
-		const deque<uint8_t>::iterator search(const vector<T>& _vector)
+		const deque<uint8_t>::iterator Search(const vector<T>& _vector)
 		{
 			deque<uint8_t> temp;
 
@@ -208,7 +209,7 @@ namespace wkSTL
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
 
-		const deque<uint8_t>::iterator search(const string& _str)
+		const deque<uint8_t>::iterator Search(const string& _str)
 		{
 			deque<uint8_t> temp;
 			temp.resize(_str.length());
@@ -217,7 +218,7 @@ namespace wkSTL
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
 
-		long long at(deque<uint8_t>::iterator _it)
+		long long At(deque<uint8_t>::iterator _it)
 		{
 			if (_it != deque_.end())
 				return std::distance(deque_.begin(), _it);
@@ -225,7 +226,7 @@ namespace wkSTL
 			return -1;
 		}
 
-		size_t pop(char* _buf, int _len)
+		size_t Pop(char* _buf, int _len)
 		{
 			lock_guard<mutex> lock(mutex_);
 
@@ -247,22 +248,27 @@ namespace wkSTL
 			return dSize;
 		}
 
-		size_t isEmpty() const
+		size_t IsEmpty() const
 		{
 			lock_guard<mutex> lock(mutex_);
 			return deque_.empty();
 		}
 
-		void clear()
+		void Clear()
 		{
 			lock_guard<mutex> lock(mutex_);
 			deque_.clear();
 		}
 
-		size_t length() const
+		size_t Length() const
 		{
 			lock_guard<mutex> lock(mutex_);
 			return deque_.size();
+		}
+
+		uint64_t SumAll()
+		{
+			return std::accumulate(deque_.begin(), deque_.end(), 0);
 		}
 
 		friend ostream& operator<<(ostream& _os, Pipeline& _pipeline)
