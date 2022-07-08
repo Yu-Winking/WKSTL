@@ -49,11 +49,12 @@ int main()
 	A a;
 	pushLen = pipeline.push(std::move(a));
 	std::cout << "push class A length:" << pushLen << std::endl;
+	//pipeline.push('\0');
 
 	std::vector<int> vecInt{ 1,2,3,4,5,6,7,8,9,10 };
 	pushLen = pipeline.push(vecInt);
 	std::cout << "push int vector length:" << pushLen << std::endl;
-	pipeline.push('\0');
+	//pipeline.push('\0');
 
 	std::vector<std::string> vecStr{ "abc", "efg", "hijk", "lmnopqrst" };
 	pushLen = pipeline.push(vecStr);
@@ -100,7 +101,7 @@ int main()
 	std::cout << "pipeline content:" << pipeline << std::endl;
 
 	uint8_t f{ 0xbb };
-	std::cout << "f in pos:" << pipeline.at(pipeline.search(f)) << std::endl;
+	std::cout << "0xbb in pos:" << pipeline.at(pipeline.search(f)) << std::endl;
 	std::cout << "s pos:" << pipeline.at(pipeline.search(str)) << std::endl;
 	std::cout << "in pos:" << pipeline.at(pipeline.search(in)) << std::endl;
 	std::cout << "c1 pos:" << pipeline.at(pipeline.search(c1)) << std::endl;

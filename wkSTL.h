@@ -103,7 +103,7 @@ namespace wkSTL
 
 			lock_guard<mutex> lock(mutex_);
 			deque_.resize(deque_.size() + sizeof(T));
-			copy_backward(add, add+sizeof(T), deque_.end());
+			std::copy_backward(add, add+sizeof(T), deque_.end());
 
 			return sizeof(T);
 		}
@@ -113,7 +113,7 @@ namespace wkSTL
 			lock_guard<mutex> lock(mutex_);
 
 			deque_.resize(deque_.size() + _len);
-			copy_backward(_buf, _buf + _len, deque_.end());
+			std::copy_backward(_buf, _buf + _len, deque_.end());
 
 			return static_cast<size_t>(_len);
 		}
@@ -129,7 +129,7 @@ namespace wkSTL
 				uint8_t* add = (uint8_t*)(&it);
 
 				deque_.resize(deque_.size() + sizeof(T));
-				copy_backward(add, add+sizeof(T), deque_.end());
+				std::copy_backward(add, add+sizeof(T), deque_.end());
 
 				pushCount += sizeof(T);
 			}
@@ -144,7 +144,7 @@ namespace wkSTL
 			size_t strLen = _str.length();
 
 			deque_.resize(deque_.size() + strLen);
-			copy_backward(_str.begin(), _str.end(), deque_.end());
+			std::copy_backward(_str.begin(), _str.end(), deque_.end());
 
 			return strLen;
 		}
@@ -165,7 +165,7 @@ namespace wkSTL
 
 			deque<uint8_t> temp;
 			temp.resize(sizeof(T));
-			copy_backward(add, add+sizeof(T), temp.end());
+			std::copy_backward(add, add+sizeof(T), temp.end());
 
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
@@ -174,7 +174,7 @@ namespace wkSTL
 		{
 			deque<uint8_t> temp;
 			temp.resize(_len);
-			copy_backward(_buf, _buf+_len, temp.end());
+			std::copy_backward(_buf, _buf+_len, temp.end());
 
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
@@ -186,7 +186,7 @@ namespace wkSTL
 			for (auto it : _vector)
 			{
 				temp.resize(temp.size() + it.length());
-				copy_backward(it.begin(), it.end(), temp.end());
+				std::copy_backward(it.begin(), it.end(), temp.end());
 			}
 
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
@@ -202,7 +202,7 @@ namespace wkSTL
 				uint8_t* add = (uint8_t*)(&it);
 
 				temp.resize(temp.size() + sizeof(T));
-				copy_backward(add, add+sizeof(T), temp.end());
+				std::copy_backward(add, add+sizeof(T), temp.end());
 			}
 
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
@@ -212,7 +212,7 @@ namespace wkSTL
 		{
 			deque<uint8_t> temp;
 			temp.resize(_str.length());
-			copy_backward(_str.begin(), _str.end(), temp.end());
+			std::copy_backward(_str.begin(), _str.end(), temp.end());
 
 			return std::search(deque_.begin(), deque_.end(), temp.begin(), temp.end());
 		}
@@ -233,12 +233,12 @@ namespace wkSTL
 
 			if (_len >= static_cast<int>(dSize))
 			{
-				copy(deque_.begin(), deque_.end(), _buf);
+				std::copy_backward(deque_.begin(), deque_.end(), _buf);
 				deque_.erase(deque_.begin(), deque_.end());
 			}
 			else
 			{
-				copy(deque_.begin(), deque_.begin() + _len, _buf);
+				std::copy_backward(deque_.begin(), deque_.begin() + _len, _buf);
 				deque_.erase(deque_.begin(), deque_.begin() + _len);
 
 				dSize = _len;
